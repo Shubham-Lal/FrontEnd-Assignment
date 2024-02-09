@@ -5,7 +5,7 @@ import { AuthContext } from "../../components/AuthProvider";
 import login from "../../utils/login";
 
 export default function LoginPage() {
-    const { setIsAuthenticated, setUser } = useContext(AuthContext);
+    const { isAuthenticating, setIsAuthenticated, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [loginData, setLoginData] = useState({
@@ -20,6 +20,7 @@ export default function LoginPage() {
         login({ loginData, setLoginData, setIsAuthenticated, setUser, navigate });
     };
 
+    if (isAuthenticating) return null;
     return (
         <div>
             <form onSubmit={handleLogin}>

@@ -9,6 +9,8 @@ export type Auth = {
         id: string | null
         username: string | null
     }>>
+    isAuthenticating: boolean
+    setIsAuthenticating: Dispatch<SetStateAction<boolean>>
     isAuthenticated: boolean
     setIsAuthenticated: Dispatch<SetStateAction<boolean>>
 };

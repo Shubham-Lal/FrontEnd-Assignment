@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { AuthContext } from "../../components/AuthProvider";
 import signup from "../../utils/signup";
 
 export default function SignupPage() {
+    const { isAuthenticating } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const [signupData, setSignupData] = useState({
@@ -18,6 +20,7 @@ export default function SignupPage() {
         signup({ signupData, setSignupData, navigate })
     };
 
+    if (isAuthenticating) return null;
     return (
         <div>
             <form onSubmit={handleSignup}>
