@@ -1,66 +1,23 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../../components/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
-interface LoginResponse {
-    success: boolean;
-    msg: string;
-    data?: {
-        _id: string;
-        username: string;
-        token: string;
-    };
-}
+import { AuthContext } from "../../components/AuthProvider";
+import login from "../../utils/login";
 
 export default function LoginPage() {
     const { setIsAuthenticated, setUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+    const [loginData, setLoginData] = useState({
+        username: "",
+        password: "",
+        loading: false
+    });
 
     const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!username.trim().length) return;
-        else if (!password.trim().length) return;
-
-        setLoading(true);
-
-        const CustomHeader = new Headers();
-        CustomHeader.append('Content-Type', 'application/json')
-        const config = {
-            method: 'POST',
-            headers: CustomHeader,
-            body: JSON.stringify({ username, password })
-        }
-
-        await fetch(`${import.meta.env.VITE_SERVER_URL}/api/login`, config)
-            .then(response => response.json())
-            .then((result: LoginResponse) => {
-                if (result.success && result.data) {
-                    toast.success(result.msg);
-                    setIsAuthenticated(true);
-                    setUser({
-                        id: result.data._id,
-                        username: result.data.username
-                    });
-                    window.localStorage.setItem("token", result.data.token);
-                    navigate('/dashboard');
-                }
-                else {
-                    toast.error(result.msg);
-                    setIsAuthenticated(false);
-                }
-            })
-            .catch(err => {
-                setIsAuthenticated(false);
-                window.localStorage.removeItem("token");
-                console.log(err);
-            })
-            .finally(() => setLoading(false));
+        login({ loginData, setLoginData, setIsAuthenticated, setUser, navigate });
     };
 
     return (
@@ -71,8 +28,11 @@ export default function LoginPage() {
                     <input
                         id="username"
                         type="text"
-                        value={username}
-                        onChange={e => setUsername(e.target.value)}
+                        value={loginData.username}
+                        onChange={e => setLoginData(prev => ({
+                            ...prev,
+                            username: e.target.value
+                        }))}
                     />
                 </div>
                 <div>
@@ -80,12 +40,15 @@ export default function LoginPage() {
                     <input
                         id="password"
                         type="password"
-                        value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        value={loginData.password}
+                        onChange={e => setLoginData(prev => ({
+                            ...prev,
+                            password: e.target.value
+                        }))}
                     />
                 </div>
                 <button type="submit">
-                    {loading ? "....." : "Login"}
+                    {loginData.loading ? "....." : "Login"}
                 </button>
             </form>
         </div>
