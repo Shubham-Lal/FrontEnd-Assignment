@@ -1,11 +1,15 @@
 const express = require("express");
-const { Login, Signup } = require("./controllers/user.js");
+
+const validateUser = require("./middlewares/validateUser.js");
+const { Login, Signup, AutoLogin } = require("./controllers/user.js");
 
 const routes = express.Router();
 
 routes.get("/", (req, res) => {
     res.status(200).json({ success: true, msg: "Server running" });
 });
+
+routes.get("/api/auto-login", validateUser, AutoLogin);
 
 routes.post("/api/login", Login);
 

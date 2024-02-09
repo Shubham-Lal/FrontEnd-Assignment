@@ -1,6 +1,27 @@
-const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
+
+const User = require('../models/user.js');
 const { authToken } = require('../utils/authToken.js');
+
+module.exports.AutoLogin = async (req, res) => {
+    try {
+        const userId = req.user.id.toString();
+
+        const user = await User.findById(userId);
+        if (!user) return res.status(400).json({ success: false, msg: "User doesn't exists" });
+
+        return res.status(200).json({
+            success: true,
+            msg: "Login success",
+            data: {
+                _id: user._id,
+                username: user.username
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Try again." });
+    }
+}
 
 module.exports.Login = async (req, res) => {
     try {
@@ -43,13 +64,13 @@ module.exports.Signup = async (req, res) => {
             password: password.trim()
         };
 
-        if (!userData.username) return res.status(405).json({ success: false, msg: "Enter your username" });
-        else if (!userData.password) return res.status(405).json({ success: false, msg: "Enter your password" });
-        else if (userData.password.length < 8) return res.status(405).json({ success: false, msg: "Password must be atleast 8 characters" });
+        if (!userData.username) return res.status(400).json({ success: false, msg: "Enter your username" });
+        else if (!userData.password) return res.status(400).json({ success: false, msg: "Enter your password" });
+        else if (userData.password.length < 8) return res.status(400).json({ success: false, msg: "Password must be atleast 8 characters" });
 
 
         const user_exists = await User.findOne({ username: userData.username });
-        if (user_exists) return res.status(405).json({ success: false, msg: "Username already exists" });
+        if (user_exists) return res.status(400).json({ success: false, msg: "Username already exists" });
 
         const encryptedPassword = await bcrypt.hash(userData.password, 12);
         await new User({
