@@ -4,8 +4,7 @@ import { Auth } from '../types/Auth';
 export const AuthContext = createContext<Auth>({
     user: {
         id: "" || null,
-        username: "" || null,
-        password: "" || null
+        username: "" || null
     },
     setUser: () => { },
     isAuthenticated: false,
@@ -17,8 +16,7 @@ type AuthProviderProps = PropsWithChildren;
 const AuthProvider = ({ children }: AuthProviderProps) => {
     const [user, setUser] = useState<Auth["user"]>({
         id: null,
-        username: null,
-        password: null
+        username: null
     });
     const [isAuthenticated, setIsAuthenticated] = useState<Auth["isAuthenticated"]>(false);
 
