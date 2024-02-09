@@ -2,7 +2,7 @@ const User = require('../models/user.js');
 const bcrypt = require('bcrypt');
 const { authToken } = require('../utils/authToken.js');
 
-module.exports.login = async (req, res) => {
+module.exports.Login = async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -34,7 +34,7 @@ module.exports.login = async (req, res) => {
     }
 };
 
-module.exports.register = async (req, res) => {
+module.exports.Signup = async (req, res) => {
     try {
         const { username, password } = req.body;
 

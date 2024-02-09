@@ -1,5 +1,5 @@
 const express = require("express");
-const { login, register } = require("./controllers/user.js");
+const { Login, Signup } = require("./controllers/user.js");
 
 const routes = express.Router();
 
@@ -7,10 +7,8 @@ routes.get("/", (req, res) => {
     res.status(200).json({ success: true, msg: "Server running" });
 });
 
-// User login
-routes.post("/api/login", login);
+routes.post("/api/login", Login);
 
-// User registration
-routes.post("/api/register", register);
+routes.post("/api/signup", Signup);
 
 module.exports = routes;
