@@ -1,5 +1,10 @@
+import Background from '../../components/Background';
+import './style.css';
+
 export default function AboutPage() {
     return (
-        <div>About Page</div>
+        <Background>
+            <h1>About page</h1>
+        </Background>
     )
 }

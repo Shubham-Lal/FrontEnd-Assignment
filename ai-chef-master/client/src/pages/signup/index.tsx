@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../components/AuthProvider";
 import signup from "../../utils/signup";
+import Background from "../../components/Background";
+import "./style.css";
 
 export default function SignupPage() {
     const { isAuthenticating } = useContext(AuthContext);
@@ -22,7 +24,7 @@ export default function SignupPage() {
 
     if (isAuthenticating) return null;
     return (
-        <div>
+        <Background>
             <form onSubmit={handleSignup}>
                 <div>
                     <label htmlFor="username">Username</label>
@@ -52,6 +54,6 @@ export default function SignupPage() {
                     {signupData.loading ? "....." : "Signup"}
                 </button>
             </form>
-        </div>
+        </Background>
     )
 }

@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../components/AuthProvider";
 import login from "../../utils/login";
+import Background from "../../components/Background";
+import "./style.css";
 
 export default function LoginPage() {
     const { isAuthenticating, setIsAuthenticated, setUser } = useContext(AuthContext);
@@ -22,7 +24,7 @@ export default function LoginPage() {
 
     if (isAuthenticating) return null;
     return (
-        <div>
+        <Background>
             <form onSubmit={handleLogin}>
                 <div>
                     <label htmlFor="username">Username</label>
@@ -52,6 +54,6 @@ export default function LoginPage() {
                     {loginData.loading ? "....." : "Login"}
                 </button>
             </form>
-        </div>
+        </Background>
     )
 }
