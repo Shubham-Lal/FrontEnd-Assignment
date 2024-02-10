@@ -7,3 +7,13 @@
 body {
   font-family: 'Montserrat', sans-serif;
 }
+
+a {
+  text-decoration: none;
+}
+
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}

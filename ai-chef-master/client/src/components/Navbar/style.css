@@ -1,0 +1,134 @@
+#navbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    overflow-x: clip;
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    width: 100%;
+    height: inherit;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.1;
+    transition: height ease-in-out 500ms;
+}
+
+.background.expand {
+    height: 100svh;
+}
+
+.navbar__container {
+    z-index: 1;
+    padding-right: 10px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo__container {
+    height: 60px;
+}
+
+.logo {
+    width: auto;
+    height: inherit;
+}
+
+.right__container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.home-btn,
+.about-btn {
+    padding: 7.5px 15px;
+    border-radius: 5px;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    transition: box-shadow ease-in-out 100ms;
+}
+
+.home-btn {
+    background-color: #f3c72e;
+}
+
+.home-btn:hover {
+    box-shadow: rgba(255, 255, 255, 0.4) -2.5px 5px, rgba(255, 255, 255, 0.3) -5px 10px, rgba(255, 255, 255, 0.2) -7.5px 15px, rgba(255, 255, 255, 0.1) -10px 20px, rgba(255, 255, 255, 0.05) -12.5px 25px;
+}
+
+.about-btn {
+    background-color: #5e7b2f;
+}
+
+.about-btn:hover {
+    box-shadow: rgba(255, 255, 255, 0.4) -2.5px 5px, rgba(255, 255, 255, 0.3) -5px 10px, rgba(255, 255, 255, 0.2) -7.5px 15px, rgba(255, 255, 255, 0.1) -10px 20px, rgba(255, 255, 255, 0.05) -12.5px 25px;
+}
+
+.divider {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.5);
+    height: 25px;
+}
+
+.right__container .signup-btn,
+.right__container .login-dashboard-btn {
+    padding: 7.5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: box-shadow ease-in-out 100ms;
+}
+
+.right__container .signup-btn {
+    background-color: white;
+    color: black;
+}
+
+.right__container .signup-btn:hover {
+    box-shadow: rgba(255, 255, 255, 0.4) 2.5px 5px, rgba(255, 255, 255, 0.3) 5px 10px, rgba(255, 255, 255, 0.2) 7.5px 15px, rgba(255, 255, 255, 0.1) 10px 20px, rgba(255, 255, 255, 0.05) 12.5px 25px;
+}
+
+.right__container .login-dashboard-btn {
+    background-color: black;
+    color: white;
+}
+
+.right__container .login-dashboard-btn:hover {
+    box-shadow: rgba(255, 255, 255, 0.4) 2.5px 5px, rgba(255, 255, 255, 0.3) 5px 10px, rgba(255, 255, 255, 0.2) 7.5px 15px, rgba(255, 255, 255, 0.1) 10px 20px, rgba(255, 255, 255, 0.05) 12.5px 25px;
+    ;
+}
+
+.expand-navbar-btn {
+    display: flex;
+    align-items: center;
+    transition: transform linear 500ms;
+}
+
+.expand-navbar-btn.rotate {
+    transform: rotate(-180deg);
+}
+
+@media screen and (max-width: 475px) {
+
+    .home-btn,
+    .about-btn,
+    .divider {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 476px) {
+    .expand-navbar-btn {
+        display: none;
+    }
+}
