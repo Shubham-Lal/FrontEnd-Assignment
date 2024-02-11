@@ -8,7 +8,7 @@ module.exports.AutoLogin = async (req, res) => {
         const userId = req.user.id.toString();
 
         const user = await User.findById(userId);
-        if (!user) return res.status(400).json({ success: false, msg: "User doesn't exists" });
+        if (!user) return res.status(400).json({ success: false, username: true, msg: "User doesn't exists" });
 
         return res.status(200).json({
             success: true,
@@ -33,10 +33,10 @@ module.exports.Login = async (req, res) => {
         }
 
         const user = await User.findOne({ username: username.trim() });
-        if (!user) return res.status(400).json({ success: false, msg: "User doesn't exists" });
+        if (!user) return res.status(400).json({ success: false, username: true, msg: "User doesn't exists" });
 
         const verify = await bcrypt.compare(userData.password, user.password);
-        if (!verify) return res.status(400).json({ success: false, msg: "Incorrect password" });
+        if (!verify) return res.status(400).json({ success: false, password: true, msg: "Incorrect password" });
 
         const token = authToken({ id: user._id.toString() }, "1d");
 
@@ -64,13 +64,13 @@ module.exports.Signup = async (req, res) => {
             password: password.trim()
         };
 
-        if (!userData.username) return res.status(400).json({ success: false, msg: "Enter your username" });
-        else if (!userData.password) return res.status(400).json({ success: false, msg: "Enter your password" });
-        else if (userData.password.length < 8) return res.status(400).json({ success: false, msg: "Password must be atleast 8 characters" });
+        if (!userData.username) return res.status(400).json({ success: false, username: true, msg: "Enter your username" });
+        else if (!userData.password) return res.status(400).json({ success: false, password: true, msg: "Enter your password" });
+        else if (userData.password.length < 8) return res.status(400).json({ success: false, password: true, msg: "Password must be atleast 8 characters" });
 
 
         const user_exists = await User.findOne({ username: userData.username });
-        if (user_exists) return res.status(400).json({ success: false, msg: "Username already exists" });
+        if (user_exists) return res.status(400).json({ success: false, username: true, msg: "Username already exists" });
 
         const encryptedPassword = await bcrypt.hash(userData.password, 12);
         await new User({
