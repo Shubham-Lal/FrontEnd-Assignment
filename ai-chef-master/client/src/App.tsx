@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 
+import loadServer from "./utils/load-server";
+import LoadingPage from "./Loading";
 import ErrorPage from "./Error";
 import AuthProvider from "./components/AuthProvider";
 import Background from "./components/Background";
@@ -10,17 +12,13 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { HomePage, AboutPage, LoginPage, SignupPage, DashboardPage } from "./pages";
 
 export default function App() {
-  const [renderApp, setRenderApp] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [serverDown, setServerDown] = useState(false);
 
-  useEffect(() => {
-    const loadServer = async () => {
-      await fetch(`${import.meta.env.VITE_SERVER_URL}`)
-        .then(() => setRenderApp(true));
-    }
-    loadServer();
-  }, []);
+  loadServer(setServerDown, setLoading);
 
-  if (!renderApp) return <ErrorPage message="Make sure server is up and running!" />;
+  if (loading) return <LoadingPage />;
+  if (serverDown) return <ErrorPage message="Make sure server is up and running!" />;
   return (
     <AuthProvider>
       <Toaster
