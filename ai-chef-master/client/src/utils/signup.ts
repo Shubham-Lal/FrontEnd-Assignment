@@ -10,7 +10,11 @@ interface SignupProps {
         username: string;
         password: string;
         loading: boolean;
-    }>>
+    }>>;
+    setSignupError: React.Dispatch<React.SetStateAction<{
+        username: boolean;
+        password: boolean;
+    }>>;
 }
 
 interface SignupResponse {
@@ -19,11 +23,25 @@ interface SignupResponse {
 }
 
 const signup = async (
-    { signupData, setSignupData, navigate }: SignupProps &
+    { signupData, setSignupData, setSignupError, navigate }: SignupProps &
     { navigate: Function }
 ) => {
-    if (!signupData.username.trim().length) return toast.error('Create your username');
-    else if (!signupData.password.trim().length) return toast.error('Create your password');
+    if (!signupData.username.trim().length) {
+        setSignupError(prev => ({
+            ...prev,
+            username: true
+        }))
+        toast.error('Create your username');
+        return;
+    }
+    else if (!signupData.password.trim().length) {
+        setSignupError(prev => ({
+            ...prev,
+            password: true
+        }))
+        toast.error('Create your password');
+        return;
+    }
 
     setSignupData(prev => ({
         ...prev, loading: true

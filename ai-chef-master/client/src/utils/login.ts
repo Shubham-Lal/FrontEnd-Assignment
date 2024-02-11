@@ -11,6 +11,10 @@ interface LoginProps {
         password: string;
         loading: boolean;
     }>>;
+    setLoginError: React.Dispatch<React.SetStateAction<{
+        username: boolean;
+        password: boolean;
+    }>>;
 }
 
 interface LoginResponse {
@@ -24,11 +28,25 @@ interface LoginResponse {
 }
 
 const login = async (
-    { loginData, setLoginData, setIsAuthenticated, setUser, navigate }: LoginProps &
+    { loginData, setLoginData, setLoginError, setIsAuthenticated, setUser, navigate }: LoginProps &
     { setIsAuthenticated: Function, setUser: Function, navigate: Function }
 ) => {
-    if (!loginData.username.trim().length) return toast.error('Enter your username');
-    else if (!loginData.password.trim().length) return toast.error('Enter your password');
+    if (!loginData.username.trim().length) {
+        setLoginError(prev => ({
+            ...prev,
+            username: true
+        }))
+        toast.error('Enter your username');
+        return;
+    }
+    else if (!loginData.password.trim().length) {
+        setLoginError(prev => ({
+            ...prev,
+            password: true
+        }))
+        toast.error('Enter your password');
+        return;
+    }
 
     setLoginData(prev => ({
         ...prev,

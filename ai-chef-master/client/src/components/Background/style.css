@@ -17,5 +17,5 @@
     width: 100%;
     height: inherit;
     object-fit: cover;
-    filter: brightness(50%);
+    /* filter: brightness(50%); */
 }
