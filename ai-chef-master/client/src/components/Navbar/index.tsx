@@ -1,7 +1,10 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
 import { FaCircleChevronUp } from 'react-icons/fa6';
+
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 import { AuthContext } from '../AuthProvider';
 import useClickOutside from '../../hooks/useClickOutside';
@@ -18,6 +21,10 @@ const Navbar = () => {
     const authToken = localStorage.getItem('token');
 
     useClickOutside(menuRef, () => setMenu(false), toggleButtonRef.current || undefined);
+
+    useEffect(() => {
+        AOS.init();
+    }, []);
 
     return (
         <>

@@ -1,10 +1,8 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
+import ErrorPage from "./Error";
 import AuthProvider from "./components/AuthProvider";
 import Background from "./components/Background";
 import Navbar from "./components/Navbar";
@@ -12,10 +10,17 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { HomePage, AboutPage, LoginPage, SignupPage, DashboardPage } from "./pages";
 
 export default function App() {
+  const [renderApp, setRenderApp] = useState(false);
+
   useEffect(() => {
-    AOS.init();
+    const loadServer = async () => {
+      await fetch(`${import.meta.env.VITE_SERVER_URL}`)
+        .then(() => setRenderApp(true));
+    }
+    loadServer();
   }, []);
 
+  if (!renderApp) return <ErrorPage message="Make sure server is up and running!" />;
   return (
     <AuthProvider>
       <Toaster
