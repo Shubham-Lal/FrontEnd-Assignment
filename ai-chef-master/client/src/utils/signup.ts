@@ -19,6 +19,8 @@ interface SignupProps {
 
 interface SignupResponse {
     success: boolean;
+    username?: boolean;
+    password?: boolean;
     msg: string;
 }
 
@@ -26,6 +28,11 @@ const signup = async (
     { signupData, setSignupData, setSignupError, navigate }: SignupProps &
     { navigate: Function }
 ) => {
+    setSignupError({
+        username: false,
+        password: false
+    });
+
     if (!signupData.username.trim().length) {
         setSignupError(prev => ({
             ...prev,
@@ -66,7 +73,21 @@ const signup = async (
                 toast.success(result.msg);
                 navigate('/login');
             }
-            else toast.error(result.msg);
+            else {
+                if (result.username) {
+                    setSignupError(prev => ({
+                        ...prev,
+                        username: true
+                    }))
+                }
+                else if (result.password) {
+                    setSignupError(prev => ({
+                        ...prev,
+                        password: true
+                    }))
+                }
+                toast.error(result.msg);
+            }
         })
         .catch(err => {
             console.log(err);

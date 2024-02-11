@@ -37,7 +37,7 @@
 }
 
 .form__container input::placeholder {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 .form__container button {

@@ -19,6 +19,8 @@ interface LoginProps {
 
 interface LoginResponse {
     success: boolean;
+    username?: boolean;
+    password?: boolean;
     msg: string;
     data?: {
         _id: string;
@@ -31,11 +33,16 @@ const login = async (
     { loginData, setLoginData, setLoginError, setIsAuthenticated, setUser, navigate }: LoginProps &
     { setIsAuthenticated: Function, setUser: Function, navigate: Function }
 ) => {
+    setLoginError({
+        username: false,
+        password: false
+    });
+
     if (!loginData.username.trim().length) {
         setLoginError(prev => ({
             ...prev,
             username: true
-        }))
+        }));
         toast.error('Enter your username');
         return;
     }
@@ -43,7 +50,7 @@ const login = async (
         setLoginError(prev => ({
             ...prev,
             password: true
-        }))
+        }));
         toast.error('Enter your password');
         return;
     }
@@ -79,6 +86,18 @@ const login = async (
                 navigate('/dashboard');
             }
             else {
+                if (result.username) {
+                    setLoginError(prev => ({
+                        ...prev,
+                        username: true
+                    }));
+                }
+                else if (result.password) {
+                    setLoginError(prev => ({
+                        ...prev,
+                        password: true
+                    }));
+                }
                 toast.error(result.msg);
                 setIsAuthenticated(false);
             }

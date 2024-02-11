@@ -46,7 +46,7 @@ export default function SignupPage() {
                 <div
                     className="input-divider"
                     style={{
-                        backgroundColor: signupData.username ? "white" : signupError.username ? "red" : "rgba(255, 255, 255, 0.25)"
+                        backgroundColor: signupError.username ? "red" : signupData.username ? "white" : "rgba(255, 255, 255, 0.25)"
                     }}
                 />
                 <input
@@ -62,7 +62,7 @@ export default function SignupPage() {
                 <div
                     className="input-divider"
                     style={{
-                        backgroundColor: signupData.password ? "white" : signupError.password ? "red" : "rgba(255, 255, 255, 0.25)"
+                        backgroundColor: signupError.password ? "red" : signupData.password ? "white" : "rgba(255, 255, 255, 0.25)"
                     }}
                 />
                 <button type="submit" disabled={signupData.loading}>

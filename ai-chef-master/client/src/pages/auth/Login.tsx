@@ -46,7 +46,7 @@ export default function LoginPage() {
                 <div
                     className="input-divider"
                     style={{
-                        backgroundColor: loginData.username ? "white" : loginError.username ? "red" : "rgba(255, 255, 255, 0.25)"
+                        backgroundColor: loginError.username ? "red" : loginData.username ? "white" : "rgba(255, 255, 255, 0.25)"
                     }}
                 />
                 <input
@@ -62,7 +62,7 @@ export default function LoginPage() {
                 <div
                     className="input-divider"
                     style={{
-                        backgroundColor: loginData.password ? "white" : loginError.password ? "red" : "rgba(255, 255, 255, 0.25)"
+                        backgroundColor: loginError.password ? "red" : loginData.password ? "white" : "rgba(255, 255, 255, 0.25)"
                     }}
                 />
                 <button type="submit" disabled={loginData.loading}>
