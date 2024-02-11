@@ -1,18 +1,18 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Toaster } from "sonner";
+
 import AuthProvider from "./components/AuthProvider";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { HomePage, AboutPage, LoginPage, SignupPage, DashboardPage } from "./pages";
-import { Toaster } from "sonner";
-import Navbar from "./components/Navbar";
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <><Navbar /><HomePage /></>,
+    element: <HomePage />,
   },
   {
     path: '/about',
-    element: <><Navbar /><AboutPage /></>,
+    element: <AboutPage />,
   },
   {
     path: '/login',
@@ -34,7 +34,6 @@ const router = createBrowserRouter([
     path: '/dashboard',
     element: (
       <ProtectedRoute>
-        <Navbar />
         <DashboardPage />
       </ProtectedRoute>
     ),
@@ -46,7 +45,7 @@ export default function App() {
     <AuthProvider>
       <Toaster
         duration={2500}
-        position="top-center"
+        position="bottom-center"
         richColors
       />
       <RouterProvider router={router} />
