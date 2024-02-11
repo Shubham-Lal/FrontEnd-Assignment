@@ -129,8 +129,8 @@
 .profile__menu {
     position: absolute;
     z-index: 3;
+    top: 0;
     right: 10px;
-    top: 60px;
     padding: 10px 10px 15px 10px;
     max-width: 218.25px;
     width: 100%;
@@ -218,6 +218,32 @@
     box-shadow: 0px 0px 0px 0px transparent;
 }
 
+.expand__container {
+    position: fixed;
+    z-index: 3;
+    top: 60px;
+    width: 100%;
+    height: calc(100svh - 60px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.expand__container a,
+.expand__container button {
+    color: white;
+    font-size: 30px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bolder;
+}
+
+.expand__container a:hover,
+.expand__container button:hover {
+    text-decoration: underline;
+}
+
 @media screen and (max-width: 475px) {
 
     .home-btn,
@@ -228,7 +254,15 @@
 }
 
 @media screen and (min-width: 476px) {
+    .background {
+        display: none;
+    }
+
     .expand-navbar-btn {
+        display: none;
+    }
+
+    .expand__container {
         display: none;
     }
 }

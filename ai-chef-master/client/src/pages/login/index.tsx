@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { AuthContext } from "../../components/AuthProvider";
 import login from "../../utils/login";
-import Background from "../../components/Background";
 import "./style.css";
 
 export default function LoginPage() {
@@ -24,36 +23,34 @@ export default function LoginPage() {
 
     if (isAuthenticating) return null;
     return (
-        <Background>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input
-                        id="username"
-                        type="text"
-                        value={loginData.username}
-                        onChange={e => setLoginData(prev => ({
-                            ...prev,
-                            username: e.target.value
-                        }))}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password</label>
-                    <input
-                        id="password"
-                        type="password"
-                        value={loginData.password}
-                        onChange={e => setLoginData(prev => ({
-                            ...prev,
-                            password: e.target.value
-                        }))}
-                    />
-                </div>
-                <button type="submit">
-                    {loginData.loading ? "....." : "Login"}
-                </button>
-            </form>
-        </Background>
+        <form onSubmit={handleLogin} id="login">
+            <div>
+                <label htmlFor="username">Username</label>
+                <input
+                    id="username"
+                    type="text"
+                    value={loginData.username}
+                    onChange={e => setLoginData(prev => ({
+                        ...prev,
+                        username: e.target.value
+                    }))}
+                />
+            </div>
+            <div>
+                <label htmlFor="password">Password</label>
+                <input
+                    id="password"
+                    type="password"
+                    value={loginData.password}
+                    onChange={e => setLoginData(prev => ({
+                        ...prev,
+                        password: e.target.value
+                    }))}
+                />
+            </div>
+            <button type="submit">
+                {loginData.loading ? "....." : "Login"}
+            </button>
+        </form>
     )
 }

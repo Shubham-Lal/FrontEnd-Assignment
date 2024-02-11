@@ -1,10 +1,9 @@
-import Background from '../../components/Background';
 import './style.css';
 
 export default function HomePage() {
     return (
-        <Background>
+        <div id='home'>
             <h1>Home Page</h1>
-        </Background>
+        </div>
     )
 }

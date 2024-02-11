@@ -43,7 +43,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
             setIsAuthenticating(false);
             navigate(addressURL, { replace: true });
         }
-        else if (authToken.length && isAuthenticating && !isAuthenticated) autoLogin();
+        else if (!!authToken && isAuthenticating && !isAuthenticated) autoLogin();
         else if (!isAuthenticated) navigate(addressURL, { replace: true });
 
     }, [isAuthenticated, isAuthenticating, authToken, setIsAuthenticating, setIsAuthenticated, setUser, navigate]);

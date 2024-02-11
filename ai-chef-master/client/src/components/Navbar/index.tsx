@@ -1,13 +1,15 @@
-import { useContext, useRef, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useContext, useRef, useState } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
 import { FaCircleChevronUp } from 'react-icons/fa6';
 
 import { AuthContext } from '../AuthProvider';
-import './style.css';
 import useClickOutside from '../../hooks/useClickOutside';
+import './style.css';
 
 const Navbar = () => {
+    const location = useLocation();
+
     const menuRef = useRef(null);
     const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
@@ -48,6 +50,7 @@ const Navbar = () => {
                             <Link
                                 to='/signup'
                                 className={`signup-btn ${location.pathname === '/signup' && "active"}`}
+                                onClick={() => setExpand(false)}
                             >
                                 Get Started
                             </Link>
@@ -56,6 +59,7 @@ const Navbar = () => {
                             <Link
                                 to={!!authToken ? "/dashboard" : "/login"}
                                 className={`login-dashboard-btn ${location.pathname === '/login' && "active"}`}
+                                onClick={() => setExpand(false)}
                             >
                                 {!!authToken ? "Dashboard" : "Login"}
                             </Link>
@@ -77,17 +81,74 @@ const Navbar = () => {
                         </button>
                     </div>
                 </div>
+
+                {expand && <ExpandMenu setExpand={setExpand} />}
             </div>
-            {menu && <Menu menuRef={menuRef} />}
+
+            {menu && <Menu menuRef={menuRef} setMenu={setMenu} />}
         </>
+    )
+}
+
+interface ExpandMenuProps {
+    setExpand: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const ExpandMenu: React.FC<ExpandMenuProps> = ({ setExpand }) => {
+    const navigate = useNavigate();
+    const { setIsAuthenticated, setUser } = useContext(AuthContext);
+
+    const [visible, setVisible] = useState(false);
+
+    const authToken = localStorage.getItem('token');
+
+    setTimeout(() => setVisible(true), 200);
+
+    const handleLogout = () => {
+        setIsAuthenticated(false);
+        setUser({
+            id: null,
+            username: null
+        });
+        localStorage.removeItem('token');
+        navigate('/');
+        setExpand(false);
+    }
+
+    if (!visible) return null
+    return (
+        <div className='expand__container'>
+            <Link
+                to='/'
+                data-aos="fade-left"
+                className={`${location.pathname === '/' && "underline"}`}
+                onClick={() => setExpand(false)}
+            >
+                Home
+            </Link>
+            <Link
+                to='/about'
+                data-aos="fade-right"
+                className={`${location.pathname === '/about' && "underline"}`}
+                onClick={() => setExpand(false)}
+            >
+                About
+            </Link>
+            {!!authToken && (
+                <button data-aos="fade-up" onClick={handleLogout}>
+                    Logout
+                </button>
+            )}
+        </div>
     )
 }
 
 interface MenuProps {
     menuRef: React.RefObject<HTMLDivElement>;
+    setMenu: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Menu: React.FC<MenuProps> = ({ menuRef }) => {
+const Menu: React.FC<MenuProps> = ({ menuRef, setMenu }) => {
     const navigate = useNavigate();
     const { setIsAuthenticated, user, setUser } = useContext(AuthContext);
 
@@ -99,11 +160,12 @@ const Menu: React.FC<MenuProps> = ({ menuRef }) => {
         });
         localStorage.removeItem('token');
         navigate('/');
+        setMenu(false);
     }
 
     return (
         <div className='menu__container'>
-            <div className='profile__menu' ref={menuRef}>
+            <div data-aos="fade-up" className='profile__menu' ref={menuRef}>
                 <p>Hello, {user.username}</p>
                 <button
                     onClick={handleLogout}

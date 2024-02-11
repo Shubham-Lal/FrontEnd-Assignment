@@ -1,9 +1,9 @@
-import Background from "../../components/Background";
+import './style.css';
 
 export default function DashboardPage() {
     return (
-        <Background>
+        <div id='dashboard'>
             <h1>Dashboard Page</h1>
-        </Background>
+        </div>
     )
 }
