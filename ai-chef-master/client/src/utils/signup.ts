@@ -15,6 +15,7 @@ interface SignupProps {
         username: boolean;
         password: boolean;
     }>>;
+    navigate: (path: string) => void;
 }
 
 interface SignupResponse {
@@ -24,10 +25,11 @@ interface SignupResponse {
     msg: string;
 }
 
-const signup = async (
-    { signupData, setSignupData, setSignupError, navigate }: SignupProps &
-    { navigate: Function }
-) => {
+const signup = async ({
+    signupData, setSignupData,
+    setSignupError,
+    navigate
+}: SignupProps) => {
     setSignupError({
         username: false,
         password: false

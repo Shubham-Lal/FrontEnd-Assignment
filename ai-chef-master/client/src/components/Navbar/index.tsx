@@ -12,14 +12,13 @@ import './style.css';
 
 const Navbar = () => {
     const location = useLocation();
-    const { isAuthenticating } = useContext(AuthContext);
+    const { isAuthenticating, isAuthenticated } = useContext(AuthContext);
 
     const menuRef = useRef(null);
     const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
     const [expand, setExpand] = useState<boolean>(false);
     const [menu, setMenu] = useState<boolean>(false);
-    const authToken = localStorage.getItem('token');
 
     useClickOutside(menuRef, () => setMenu(false), toggleButtonRef.current || undefined);
 
@@ -27,7 +26,6 @@ const Navbar = () => {
         AOS.init();
     }, []);
 
-    if (isAuthenticating) return null;
     return (
         <>
             <div id='navbar'>
@@ -54,47 +52,60 @@ const Navbar = () => {
                         >
                             About
                         </Link>
-                        <div className='divider' />
-                        {!authToken && (
-                            <Link
-                                to='/signup'
-                                className={`signup-btn ${location.pathname === '/signup' && "active"}`}
-                                onClick={() => setExpand(false)}
-                            >
-                                Get Started
-                            </Link>
+                        {!isAuthenticating && (
+                            <>
+                                <div className='divider' />
+                                {!isAuthenticated ? (
+                                    <>
+                                        <Link
+                                            to='/signup'
+                                            className={`nav-btn ${location.pathname === '/signup' && "active"}`}
+                                            onClick={() => setExpand(false)}
+                                        >
+                                            Get Started
+                                        </Link>
+
+                                        <Link
+                                            to='/login'
+                                            className={`nav-btn ${location.pathname === '/login' && "active"}`}
+                                            onClick={() => setExpand(false)}
+                                        >
+                                            Login
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Link
+                                            to='/dashboard'
+                                            className={`nav-btn ${location.pathname === '/dashboard' && "active"}`}
+                                            onClick={() => setExpand(false)}
+                                        >
+                                            Dashboard
+                                        </Link>
+                                        <button
+                                            ref={toggleButtonRef}
+                                            onClick={() => setMenu(!menu)}
+                                            style={{ display: "flex", alignItems: "center" }}
+                                        >
+                                            <FaUserAlt size={25} fill='white' />
+                                        </button>
+                                    </>
+                                )}
+                                <button
+                                    onClick={() => setExpand(!expand)}
+                                    className={`expand-navbar-btn ${expand && "rotate"}`}
+                                >
+                                    <FaCircleChevronUp size={30} fill='white' />
+                                </button>
+                            </>
                         )}
-                        {location.pathname !== '/dashboard' ? (
-                            <Link
-                                to={!!authToken ? "/dashboard" : "/login"}
-                                className={`login-dashboard-btn ${location.pathname === '/login' && "active"}`}
-                                onClick={() => setExpand(false)}
-                            >
-                                {!!authToken ? "Dashboard" : "Login"}
-                            </Link>
-                        ) : (
-                            <button
-                                ref={toggleButtonRef}
-                                title='Logout'
-                                onClick={() => setMenu(!menu)}
-                                style={{ display: "flex", alignItems: "center" }}
-                            >
-                                <FaUserAlt size={25} fill='white' />
-                            </button>
-                        )}
-                        <button
-                            onClick={() => setExpand(!expand)}
-                            className={`expand-navbar-btn ${expand && "rotate"}`}
-                        >
-                            <FaCircleChevronUp size={30} fill='white' />
-                        </button>
                     </div>
                 </div>
 
-                {expand && <ExpandMenu setExpand={setExpand} />}
+                {!isAuthenticating && expand && <ExpandMenu setExpand={setExpand} />}
             </div>
 
-            {menu && <Menu menuRef={menuRef} setMenu={setMenu} />}
+            {!isAuthenticating && menu && <Menu menuRef={menuRef} setMenu={setMenu} />}
         </>
     )
 }
@@ -105,11 +116,9 @@ interface ExpandMenuProps {
 
 const ExpandMenu: React.FC<ExpandMenuProps> = ({ setExpand }) => {
     const navigate = useNavigate();
-    const { setIsAuthenticated, setUser } = useContext(AuthContext);
+    const { isAuthenticated, setIsAuthenticated, setUser } = useContext(AuthContext);
 
     const [visible, setVisible] = useState(false);
-
-    const authToken = localStorage.getItem('token');
 
     setTimeout(() => setVisible(true), 200);
 
@@ -143,7 +152,7 @@ const ExpandMenu: React.FC<ExpandMenuProps> = ({ setExpand }) => {
             >
                 About
             </Link>
-            {!!authToken && (
+            {isAuthenticated && (
                 <button data-aos="fade-up" onClick={handleLogout}>
                     Logout
                 </button>

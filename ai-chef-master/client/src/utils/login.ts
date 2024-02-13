@@ -2,9 +2,9 @@ import { toast } from "sonner";
 
 interface LoginProps {
     loginData: {
-        username: string
-        password: string
-        loading: boolean
+        username: string;
+        password: string;
+        loading: boolean;
     };
     setLoginData: React.Dispatch<React.SetStateAction<{
         username: string;
@@ -15,6 +15,9 @@ interface LoginProps {
         username: boolean;
         password: boolean;
     }>>;
+    setIsAuthenticated: (isAuthenticated: boolean) => void;
+    setUser: (user: { id: string; username: string }) => void;
+    navigate: (path: string) => void;
 }
 
 interface LoginResponse {
@@ -29,10 +32,12 @@ interface LoginResponse {
     };
 }
 
-const login = async (
-    { loginData, setLoginData, setLoginError, setIsAuthenticated, setUser, navigate }: LoginProps &
-    { setIsAuthenticated: Function, setUser: Function, navigate: Function }
-) => {
+const login = async ({
+    loginData, setLoginData,
+    setLoginError,
+    setIsAuthenticated, setUser,
+    navigate
+}: LoginProps) => {
     setLoginError({
         username: false,
         password: false
@@ -99,12 +104,9 @@ const login = async (
                     }));
                 }
                 toast.error(result.msg);
-                setIsAuthenticated(false);
             }
         })
         .catch(err => {
-            setIsAuthenticated(false);
-            window.localStorage.removeItem("token");
             console.log(err);
         })
         .finally(() => {

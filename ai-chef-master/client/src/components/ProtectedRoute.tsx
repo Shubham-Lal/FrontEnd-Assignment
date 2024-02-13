@@ -1,52 +1,28 @@
-import { PropsWithChildren, useContext, useEffect } from 'react';
+import { PropsWithChildren, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { AuthContext } from './AuthProvider';
 
-type ProtectedRouteProps = PropsWithChildren;
-
-export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-    const { isAuthenticating, setIsAuthenticating, isAuthenticated, setIsAuthenticated, setUser } = useContext(AuthContext);
+export default function ProtectedRoute({ children }: PropsWithChildren) {
+    const { isAuthenticating, isAuthenticated } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const authToken = localStorage.getItem('token')!;
+    const [showPage, setShowPage] = useState('');
     const addressURL = location.pathname === '/dashboard' ? '/login' : location.pathname;
 
     useEffect(() => {
-        const autoLogin = async () => {
-            const CustomHeader = new Headers();
-            CustomHeader.append('Content-Type', 'application/json');
+        if (isAuthenticating) setShowPage('loading');
+        else if (!isAuthenticated) setShowPage('auth-page');
+        else if (isAuthenticated) setShowPage('dashboard-page');
 
-            CustomHeader.append('Authorization', authToken);
-            const config = {
-                method: 'GET',
-                headers: CustomHeader,
-            }
-
-            await fetch(`${import.meta.env.VITE_SERVER_URL}/api/auto-login`, config)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success && result.data) {
-                        setUser({
-                            id: result.data._id,
-                            username: result.data.username
-                        });
-                        setIsAuthenticated(true);
-                        navigate('/dashboard', { replace: true });
-                    }
-                    if (!result.success) navigate('/login', { replace: true });
-                })
-                .catch(() => navigate('/login', { replace: true }))
-                .finally(() => setIsAuthenticating(false));
-        }
-
-        if ((authToken === null || !authToken.length) && !isAuthenticated) {
-            setIsAuthenticating(false);
+        if (showPage === 'auth-page') {
             navigate(addressURL, { replace: true });
         }
-        else if (!!authToken && isAuthenticating && !isAuthenticated) autoLogin();
-        else if (!isAuthenticated) navigate(addressURL, { replace: true });
+        else if (showPage === 'dashboard-page') {
+            navigate('/dashboard', { replace: true });
+        }
+    }, [isAuthenticating, isAuthenticated, showPage, navigate, addressURL]);
 
-    }, [isAuthenticated, isAuthenticating, authToken, setIsAuthenticating, setIsAuthenticated, setUser, navigate, addressURL]);
-
+    if (showPage === 'loading') return null;
     return children;
 }

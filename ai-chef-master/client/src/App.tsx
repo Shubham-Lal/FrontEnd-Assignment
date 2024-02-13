@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 
-import loadServer from "./utils/load-server";
+import useLoadServer from "./utils/load-server";
 import LoadingPage from "./Loading";
 import ErrorPage from "./Error";
 import AuthProvider from "./components/AuthProvider";
@@ -15,7 +15,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [serverDown, setServerDown] = useState(false);
 
-  loadServer(setServerDown, setLoading);
+  useLoadServer(setServerDown, setLoading);
 
   if (loading) return <LoadingPage />;
   if (serverDown) return <ErrorPage message="Failed to connect to server!" />;

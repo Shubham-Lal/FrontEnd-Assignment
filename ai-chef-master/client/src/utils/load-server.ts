@@ -18,7 +18,7 @@ function fetchWithTimeout(url: string, timeout: number): Promise<Response> {
     });
 }
 
-const loadServer = (setServerDown: Dispatch<SetStateAction<boolean>>, setLoading: Dispatch<SetStateAction<boolean>>) => {
+const useLoadServer = (setServerDown: Dispatch<SetStateAction<boolean>>, setLoading: Dispatch<SetStateAction<boolean>>) => {
     useEffect(() => {
         let isMounted = true;
         const maxAttempts = 5;
@@ -51,7 +51,7 @@ const loadServer = (setServerDown: Dispatch<SetStateAction<boolean>>, setLoading
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [setLoading, setServerDown]);
 }
 
-export default loadServer;
+export default useLoadServer;
