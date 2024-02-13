@@ -1,10 +1,12 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useContext } from 'react';
 
+import { AuthContext } from '../AuthProvider';
 import './style.css';
 
-type BackgroundProps = PropsWithChildren;
+const Background = ({ children }: PropsWithChildren) => {
+  const { isAuthenticating } = useContext(AuthContext);
 
-const Background = ({ children }: BackgroundProps) => {
+  if (isAuthenticating) return null;
   return (
     <div id='background'>
       <div className='background__layout'>

@@ -12,6 +12,7 @@ import './style.css';
 
 const Navbar = () => {
     const location = useLocation();
+    const { isAuthenticating } = useContext(AuthContext);
 
     const menuRef = useRef(null);
     const toggleButtonRef = useRef<HTMLButtonElement | null>(null);
@@ -26,6 +27,7 @@ const Navbar = () => {
         AOS.init();
     }, []);
 
+    if (isAuthenticating) return null;
     return (
         <>
             <div id='navbar'>
