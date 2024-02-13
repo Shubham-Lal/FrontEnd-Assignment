@@ -27,7 +27,7 @@ const loadServer = (setServerDown: Dispatch<SetStateAction<boolean>>, setLoading
         const loadServer = async () => {
             while (attempts < maxAttempts && isMounted) {
                 try {
-                    const response = await fetchWithTimeout(`${import.meta.env.VITE_SERVER_URL}`, 500);
+                    const response = await fetchWithTimeout(`${import.meta.env.VITE_SERVER_URL}`, 1000);
 
                     if (response.ok) {
                         setLoading(false);
@@ -37,7 +37,7 @@ const loadServer = (setServerDown: Dispatch<SetStateAction<boolean>>, setLoading
                     console.error('Failed to fetch server status:', error);
                 }
                 attempts++;
-                await new Promise(resolve => setTimeout(resolve, 500 * attempts));
+                await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
             }
 
             if (isMounted && attempts >= maxAttempts) {
