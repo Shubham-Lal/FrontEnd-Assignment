@@ -18,7 +18,7 @@ export default function App() {
   loadServer(setServerDown, setLoading);
 
   if (loading) return <LoadingPage />;
-  if (serverDown) return <ErrorPage message="Make sure server is up and running!" />;
+  if (serverDown) return <ErrorPage message="Failed to connect to server!" />;
   return (
     <AuthProvider>
       <Toaster
